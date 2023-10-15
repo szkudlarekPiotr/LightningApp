@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=200)
@@ -11,12 +12,4 @@ class BusinessHours(models.Model):
     day = models.IntegerField()
     open_time = models.IntegerField()
     close_time = models.IntegerField()
-
-class Dish(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=500)
-    picture= models.ImageField()
-    is_available = models.BooleanField(default=True)
-    dish_type = models.CharField(max_length=200)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     
