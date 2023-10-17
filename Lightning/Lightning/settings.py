@@ -33,16 +33,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "Restaurants.apps.RestaurantsConfig",
-    "RestaurantMenu.apps.RestaurantmenuConfig",
     "debug_toolbar",
     "rest_framework",
+    "Restaurants",
+    "RestaurantMenu",
+    "Cart",
 ]
 
 MESSAGE_TAGS = {
@@ -136,8 +137,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / "mediafiles"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "media/"
+
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

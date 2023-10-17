@@ -21,7 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("Restaurants.urls")),
-    path("menu/", include("RestaurantMenu.urls")),
+    path("restaurants/", include("Restaurants.urls")),
+    path("restaurants/menu/", include("RestaurantMenu.urls")),
+    path("", include("Cart.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

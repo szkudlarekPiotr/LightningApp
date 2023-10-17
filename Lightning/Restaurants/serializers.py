@@ -13,9 +13,15 @@ class RestaurantSerializer(serializers.ModelSerializer):
         fields = ["name","location", "cusine_type","opening_hour", "closing_hour", "is_active"]
 
     def get_opening_hour(self, obj):
-        opening_hour = BusinessHours.objects.filter(restaurant=obj.id, day=self.today).values_list('open_time', flat=True)[0]
+        try:
+            opening_hour = BusinessHours.objects.filter(restaurant=obj.id, day=self.today).values_list("open_time", flat=True)[0]
+        except IndexError as e:
+            return "not specified"
         return opening_hour
     
     def get_closing_hour(self, obj):
-        closing_hour = BusinessHours.objects.filter(restaurant=obj.id, day=self.today).values_list('close_time', flat=True)[0]
+        try:
+            closing_hour = BusinessHours.objects.filter(restaurant=obj.id, day=self.today).values_list('close_time', flat=True)[0]
+        except IndexError as e:
+            return 'not specified'
         return closing_hour
