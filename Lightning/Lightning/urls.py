@@ -24,12 +24,13 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("restaurants/", include("Restaurants.urls")),
     path("restaurants/menu/", include("RestaurantMenu.urls")),
     path("", include("Cart.urls")),
+    path("user/", include("UserManagement.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
     path("api-auth/", include("rest_framework.urls")),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

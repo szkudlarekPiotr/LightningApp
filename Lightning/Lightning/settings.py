@@ -160,3 +160,10 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
 }
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+#TODO: dodanie wszystkiego do api roota zeby sie samemu nie zgubic XD
