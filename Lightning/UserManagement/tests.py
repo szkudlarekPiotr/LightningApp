@@ -22,10 +22,6 @@ class CanManageProfiles(APITestCase):
             {"username": "test"},
         )
 
-    def tearDown(self):
-        self.test_user.delete()
-        self.other_user.delete()
-
     def test_CanManageOwnProfile(self):
         get = self.client.get(self.own_profile[0])
         head = self.client.head(self.own_profile[0])

@@ -1,18 +1,15 @@
-from django.db.utils import IntegrityError
 from django.shortcuts import redirect
+from django.urls import reverse
 from .models import Cart
-from .serializers import CartItemsSerializer, ListCartSerializer
+from .serializers import CartSerializer
 from rest_framework import permissions, viewsets, mixins, generics, status
 from rest_framework.response import Response
-
-
-# TODO : CZY UZYC GENERIC VIEWSET, CZY UZYC MIXINOW I ROBIC RECZNIE URL CZY MODELVIEWSET SPROBOWAC I METHOD CLASSES
-# TODO: http_method_names = ['get', 'post', 'head']
+from rest_framework.serializers import ValidationError
 
 
 class UserCartsView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Cart.objects.all()
-    serializer_class = ListCartSerializer
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -26,7 +23,7 @@ class UserCartsView(mixins.ListModelMixin, generics.GenericAPIView):
 
 class CartView(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
-    serializer_class = CartItemsSerializer
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -36,12 +33,20 @@ class CartView(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
         try:
-            serializer.save(owner=self.request.user)
-        except IntegrityError as e:
-            user_cart = Cart.objects.get(owner=self.request.user.id)
-            return redirect(
-                f"{user_cart.id}/"
-            )  # redirect user to own cart in case it already exists
-        return self.create(request, *args, **kwargs)
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            return Response(
+                data={"message": f"{e.detail['products'][0]}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            user_carts = Cart.objects.get(owner=request.user)
+        except Cart.DoesNotExist:
+            return super(CartView, self).create(request, *args, **kwargs)
+        else:
+            return redirect(f"{user_carts.id}/")
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+        return super().perform_create(serializer)

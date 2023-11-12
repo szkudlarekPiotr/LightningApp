@@ -1,12 +1,8 @@
-from ast import Delete
-from urllib import request
-from django import views
-from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
-from rest_framework import mixins, generics, viewsets, permissions
+from rest_framework import mixins, generics, permissions
 from .serializers import UserSerializer
 from .permissions import IsOwnerOrReadOnly
 
